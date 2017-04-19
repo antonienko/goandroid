@@ -86,6 +86,27 @@ func (devView DeviceView) ClickMatchingResource(resource string, index int, time
 	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matching resource [%s]", timeout, resource))
 }
 
+// TODO reduce code duplication
+func (devView DeviceView) ClickMatchingResourceAfterText(resource string, text string, index int, timeout int) error {
+	start := time.Now()
+	for {
+		current := time.Now()
+		delta := current.Sub(start)
+		if delta.Seconds() >= float64(timeout) {
+			break
+		}
+		vws, err := devView.GetViewes()
+		if err != nil {
+			return err
+		}
+		vw, found := vws.GetByMatchingResourceAfterText(resource, text)
+		if found {
+			return devView.im.TouchScreen.Tap(vw.Center.X, vw.Center.Y)
+		}
+	}
+	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matching resource [%s]", timeout, resource))
+}
+
 func (devView DeviceView) GetViewForResource(resource string, index int, timeout int) (View, error) {
 	start := time.Now()
 	for {
@@ -134,7 +155,7 @@ func (devView DeviceView) ScrollDownToResource(resource string, index int, maxsc
 		}
 		devView.im.TouchScreen.SwipeUp(1)
 	}
-	return errors.New(fmt.Sprintf("Resource [$s] not found after scrolling down [%d] times ", resource, maxscroll))
+	return errors.New(fmt.Sprintf("Resource [%s] not found after scrolling down [%d] times ", resource, maxscroll))
 }
 
 func (devView DeviceView) ScrollUpToResource(resource string, index int, maxscroll int) error {
@@ -145,7 +166,7 @@ func (devView DeviceView) ScrollUpToResource(resource string, index int, maxscro
 		}
 		devView.im.TouchScreen.SwipeDown(1)
 	}
-	return errors.New(fmt.Sprintf("Resource [$s] not found after scrolling up [%d] times ", resource, maxscroll))
+	return errors.New(fmt.Sprintf("Resource [%s] not found after scrolling up [%d] times ", resource, maxscroll))
 }
 
 func (devView DeviceView) ScrollDownToMatchingResource(resource string, index int, maxscroll int) error {
@@ -156,7 +177,7 @@ func (devView DeviceView) ScrollDownToMatchingResource(resource string, index in
 		}
 		devView.im.TouchScreen.SwipeUp(1)
 	}
-	return errors.New(fmt.Sprintf("Matching resource [$s] not found after scrolling down [%d] times ", resource, maxscroll))
+	return errors.New(fmt.Sprintf("Matching resource [%s] not found after scrolling down [%d] times ", resource, maxscroll))
 }
 
 func (devView DeviceView) ScrollUpToMatchingResource(resource string, index int, maxscroll int) error {
@@ -167,7 +188,7 @@ func (devView DeviceView) ScrollUpToMatchingResource(resource string, index int,
 		}
 		devView.im.TouchScreen.SwipeDown(1)
 	}
-	return errors.New(fmt.Sprintf("Matching resource [$s] not found after scrolling up [%d] times ", resource, maxscroll))
+	return errors.New(fmt.Sprintf("Matching resource [%s] not found after scrolling up [%d] times ", resource, maxscroll))
 }
 
 func (devView DeviceView) GetResourceForText(text string, index int, timeout int) (string, error) {
