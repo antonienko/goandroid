@@ -18,6 +18,8 @@ import (
 // and index of the view. Index is calculated based on occurence of the
 // node in uiautomator xml dump.
 type View struct {
+	TreeIndex int //Index value on the tree representation of the hierarchy.
+	TreeParentIndex int //Index value of the parent node in the tree representation of the hierarchy.
 	Index         int            // Index value of the android view component.
 	Class         string         // Canonical class name of the android view component.
 	Package       string         // Canonical package name of the android view component.
@@ -56,6 +58,20 @@ func (views Views) GetByText(text string, index int) (View, bool) {
 			}
 			idx += 1
 		}
+	}
+	return View{}, false
+}
+
+func (views Views) GetByMatchingResourceAfterText(resource string, text string) (View, bool) {
+	textView,_ := views.GetByMatchingText(text, 0)
+	//TODO Could be optimized by having a better nodes structure
+	for _, vw := range views {
+		if strings.Contains(strings.ToLower(vw.Resource), strings.ToLower(resource)) {
+			if vw.TreeIndex > textView.TreeIndex {
+				return vw, true
+			}
+		}
+
 	}
 	return View{}, false
 }

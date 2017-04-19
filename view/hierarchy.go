@@ -42,17 +42,19 @@ type Node struct {
 type Nodes []Node
 
 func (hierarchy Hierarchy) ConvertToViews() (Views, error) {
-	return hierarchy.NodeList.ConvertToViews()
+	var lastAssignedTreeIndex int
+	return hierarchy.NodeList.ConvertToViews(&lastAssignedTreeIndex, 0)
 }
 
-func (nodes Nodes) ConvertToViews() (Views, error) {
+func (nodes Nodes) ConvertToViews(lastAssignedTreeIndex *int, parentIndex int) (Views, error) {
 	views := Views{}
 	for index := range nodes {
-		v, err := nodes[index].ConvertToView()
+		*lastAssignedTreeIndex++
+		v, err := nodes[index].ConvertToView(*lastAssignedTreeIndex, parentIndex)
 		if err != nil {
 			return Views{}, err
 		}
-		vv, err := nodes[index].ChildNodes.ConvertToViews()
+		vv, err := nodes[index].ChildNodes.ConvertToViews(lastAssignedTreeIndex, *lastAssignedTreeIndex)
 		if err != nil {
 			return Views{}, err
 		}
@@ -62,7 +64,7 @@ func (nodes Nodes) ConvertToViews() (Views, error) {
 	return views, nil
 }
 
-func (node Node) ConvertToView() (View, error) {
+func (node Node) ConvertToView(treeIndex, parentIndex int) (View, error) {
 	vw := View{}
 
 	index, err := strconv.Atoi(node.Index)
@@ -85,6 +87,8 @@ func (node Node) ConvertToView() (View, error) {
 		vw.Resource = node.Resource
 	}
 
+	vw.TreeIndex = treeIndex
+	vw.TreeParentIndex = parentIndex
 	vw.Text = node.Text
 	vw.Description = node.Description
 
