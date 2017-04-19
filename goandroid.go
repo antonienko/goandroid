@@ -1,12 +1,12 @@
 package goandroid
 
 import (
-	"github.com/kunaldawn/goandroid/activity"
-	"github.com/kunaldawn/goandroid/adbutility"
-	"github.com/kunaldawn/goandroid/device"
-	"github.com/kunaldawn/goandroid/display"
-	"github.com/kunaldawn/goandroid/input"
-	"github.com/kunaldawn/goandroid/view"
+	"github.com/antonienko/goandroid/activity"
+	"github.com/antonienko/goandroid/adbutility"
+	"github.com/antonienko/goandroid/device"
+	"github.com/antonienko/goandroid/display"
+	"github.com/antonienko/goandroid/input"
+	"github.com/antonienko/goandroid/view"
 )
 
 // AndroidManager struct defines a android device manager with an associated

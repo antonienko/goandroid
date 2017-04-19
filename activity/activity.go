@@ -3,7 +3,7 @@ package activity
 import (
 	"errors"
 	"fmt"
-	"github.com/kunaldawn/goandroid/device"
+	"github.com/antonienko/goandroid/device"
 	"strings"
 	"time"
 )
@@ -13,7 +13,8 @@ type Activity struct {
 	dev device.Device // Device instance
 }
 
-// NewActivity method gives an initialized instance of activity manager.
+// NewActivity method gives an initial
+// ized instance of activity manager.
 // It takes device.Device is a parameter and returns an instance of activity.Activity
 // struct.
 func NewActivity(dev device.Device) Activity {
@@ -51,6 +52,20 @@ func (am Activity) StartActivity(canonicalClass string, options ...string) error
 	}
 	return nil
 }
+
+func (am Activity) StopPackage(packageName string) error {
+	err := am.dev.Root()
+	if err != nil {
+		return err
+	}
+	_, err = am.dev.Shell("am", "force-stop", packageName)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+
 
 // GetFocusedActivity method provides currently focused activity on device screen.
 // It uses adb command "dumpsys acyivity" command to determine focused activity

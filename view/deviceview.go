@@ -6,9 +6,9 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/kunaldawn/goandroid/device"
-	"github.com/kunaldawn/goandroid/display"
-	"github.com/kunaldawn/goandroid/input"
+	"github.com/antonienko/goandroid/device"
+	"github.com/antonienko/goandroid/display"
+	"github.com/antonienko/goandroid/input"
 	"strings"
 )
 
@@ -32,7 +32,7 @@ func (devView DeviceView) GetViewes() (Views, error) {
 }
 
 func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
-	out, err := devView.dev.Shell("uiautomator dump")
+	out, err := devView.dev.Shell("uiautomator dump /data/window_dump.xml")
 	if err != nil {
 		return Hierarchy{}, err
 	}
@@ -41,7 +41,7 @@ func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
 	if !strings.Contains(out, tag) {
 		return Hierarchy{}, errors.New(fmt.Sprintf("Unable to locate [%s] in output : %s", tag, out))
 	}
-	parts := strings.Split(out, ":")
+	parts := strings.Split(out, "dumped to:")
 	if len(parts) != 2 {
 		return Hierarchy{}, errors.New(fmt.Sprintf("Unable to locate file location in output : %s", out))
 	}

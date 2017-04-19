@@ -134,7 +134,7 @@ func (devView DeviceView) ScrollDownToType(typename string, index int, maxscroll
 		}
 		devView.im.TouchScreen.SwipeUp(1)
 	}
-	return errors.New(fmt.Sprintf("Type [$s] not found after scrolling down [%d] times ", typename, maxscroll))
+	return errors.New(fmt.Sprintf("Type [%s] not found after scrolling down [%d] times ", typename, maxscroll))
 }
 
 func (devView DeviceView) ScrollUpToType(typename string, index int, maxscroll int) error {
@@ -145,7 +145,7 @@ func (devView DeviceView) ScrollUpToType(typename string, index int, maxscroll i
 		}
 		devView.im.TouchScreen.SwipeDown(1)
 	}
-	return errors.New(fmt.Sprintf("Type [$s] not found after scrolling up [%d] times ", typename, maxscroll))
+	return errors.New(fmt.Sprintf("Type [%s] not found after scrolling up [%d] times ", typename, maxscroll))
 }
 
 func (devView DeviceView) ScrollDownToMatchingType(typename string, index int, maxscroll int) error {
@@ -156,7 +156,7 @@ func (devView DeviceView) ScrollDownToMatchingType(typename string, index int, m
 		}
 		devView.im.TouchScreen.SwipeUp(1)
 	}
-	return errors.New(fmt.Sprintf("Matching type [$s] not found after scrolling down [%d] times ", typename, maxscroll))
+	return errors.New(fmt.Sprintf("Matching type [%s] not found after scrolling down [%d] times ", typename, maxscroll))
 }
 
 func (devView DeviceView) ScrollUpToMatchingType(typename string, index int, maxscroll int) error {
@@ -167,7 +167,7 @@ func (devView DeviceView) ScrollUpToMatchingType(typename string, index int, max
 		}
 		devView.im.TouchScreen.SwipeDown(1)
 	}
-	return errors.New(fmt.Sprintf("Matching type [$s] not found after scrolling up [%d] times ", typename, maxscroll))
+	return errors.New(fmt.Sprintf("Matching type [%s] not found after scrolling up [%d] times ", typename, maxscroll))
 }
 
 func (devView DeviceView) GetTypeForText(text string, index int, timeout int) (string, error) {
@@ -209,6 +209,27 @@ func (devView DeviceView) GetTypeForMatchingText(text string, index int, timeout
 	}
 	return "", errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matcnhing text [%s]", timeout, text))
 }
+
+func (devView DeviceView) ClickTypeForMatchingText(text string, index int, timeout int) (error) {
+	start := time.Now()
+	for {
+		current := time.Now()
+		delta := current.Sub(start)
+		if delta.Seconds() >= float64(timeout) {
+			break
+		}
+		vws, err := devView.GetViewes()
+		if err != nil {
+			return err
+		}
+		vw, found := vws.GetByMatchingText(text, index)
+		if found {
+			return devView.im.TouchScreen.Tap(vw.Center.X, vw.Center.Y)
+		}
+	}
+	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matcnhing text [%s]", timeout, text))
+}
+
 
 func (devView DeviceView) GetTypeForResource(resource string, index int, timeout int) (string, error) {
 	start := time.Now()

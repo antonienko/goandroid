@@ -1,7 +1,7 @@
 package input
 
 import (
-	"github.com/kunaldawn/goandroid/device"
+	"github.com/antonienko/goandroid/device"
 )
 
 // InputManager struct holds all type of supported device input interfaces
