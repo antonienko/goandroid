@@ -19,7 +19,8 @@ func NewTextInput(dev device.Device) TextInput {
 // EnterText method enters text on selected input area. Input area must be
 // selected previously. Functionality of this method is very limited and
 // does not support any unicode aharacters or any special characters.
-func (ti TextInput) EnterText(text string) {
+func (ti TextInput) EnterText(text string) error {
 	formatted := strings.Replace(text, " ", "%s", -1)
-	ti.dev.Shell("input", "text", formatted)
+	_, err := ti.dev.Shell("input", "text", formatted)
+	return err
 }
