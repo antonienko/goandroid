@@ -230,6 +230,26 @@ func (devView DeviceView) ClickTypeForMatchingText(text string, index int, timeo
 	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matcnhing text [%s]", timeout, text))
 }
 
+func (devView DeviceView) ClickTypeForMatchingResource(resource string, index int, timeout int) (error) {
+	start := time.Now()
+	for {
+		current := time.Now()
+		delta := current.Sub(start)
+		if delta.Seconds() >= float64(timeout) {
+			break
+		}
+		vws, err := devView.GetViewes()
+		if err != nil {
+			return err
+		}
+		vw, found := vws.GetByMatchingResource(resource, index)
+		if found {
+			return devView.im.TouchScreen.Tap(vw.Center.X, vw.Center.Y)
+		}
+	}
+	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matcnhing resource [%s]", timeout, resource))
+}
+
 
 func (devView DeviceView) GetTypeForResource(resource string, index int, timeout int) (string, error) {
 	start := time.Now()
