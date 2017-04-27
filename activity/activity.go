@@ -65,8 +65,6 @@ func (am Activity) StopPackage(packageName string) error {
 	return nil
 }
 
-
-
 // GetFocusedActivity method provides currently focused activity on device screen.
 // It uses adb command "dumpsys acyivity" command to determine focused activity
 // and extracts package name from the line "mFocusedActivity".

@@ -18,26 +18,26 @@ import (
 // and index of the view. Index is calculated based on occurence of the
 // node in uiautomator xml dump.
 type View struct {
-	TreeIndex int //Index value on the tree representation of the hierarchy.
-	TreeParentIndex int //Index value of the parent node in the tree representation of the hierarchy.
-	Index         int            // Index value of the android view component.
-	Class         string         // Canonical class name of the android view component.
-	Package       string         // Canonical package name of the android view component.
-	Resource      string         // Associated resource id (if any) of the view component.
-	Text          string         // Associated text (if any) of the view component.
-	Description   string         // Associated description (if any) of the view component.
-	Clickable     bool           // Boolean value indicating if the view is clickable.
-	Checkable     bool           // Boolean value indicating if the view is checkbox or not.
-	Checked       bool           // Boolean value indicating if the view is checked or not.
-	Enabled       bool           // Boolean value indicating if the view is enabled or not.
-	Focusable     bool           // Boolean value indicating if the view is focusable by user or not.
-	Focused       bool           // Boolean value indicating if the view is currently focused or not.
-	Scrollable    bool           // Boolean value indicating if the view is scrollable or not.
-	LongClickable bool           // Boolean value indicating if the view is long click enabled or not.
-	Password      bool           // Boolean value indicating if the view is a password field or not.
-	Selected      bool           // Boolean value indicating if the view is currently selected by user or not.
-	Bound         geometry.Rect  // Bounding rectangle of the view.
-	Center        geometry.Point // Center coordinate of the view.
+	TreeIndex       int            //Index value on the tree representation of the hierarchy.
+	TreeParentIndex int            //Index value of the parent node in the tree representation of the hierarchy.
+	Index           int            // Index value of the android view component.
+	Class           string         // Canonical class name of the android view component.
+	Package         string         // Canonical package name of the android view component.
+	Resource        string         // Associated resource id (if any) of the view component.
+	Text            string         // Associated text (if any) of the view component.
+	Description     string         // Associated description (if any) of the view component.
+	Clickable       bool           // Boolean value indicating if the view is clickable.
+	Checkable       bool           // Boolean value indicating if the view is checkbox or not.
+	Checked         bool           // Boolean value indicating if the view is checked or not.
+	Enabled         bool           // Boolean value indicating if the view is enabled or not.
+	Focusable       bool           // Boolean value indicating if the view is focusable by user or not.
+	Focused         bool           // Boolean value indicating if the view is currently focused or not.
+	Scrollable      bool           // Boolean value indicating if the view is scrollable or not.
+	LongClickable   bool           // Boolean value indicating if the view is long click enabled or not.
+	Password        bool           // Boolean value indicating if the view is a password field or not.
+	Selected        bool           // Boolean value indicating if the view is currently selected by user or not.
+	Bound           geometry.Rect  // Bounding rectangle of the view.
+	Center          geometry.Point // Center coordinate of the view.
 }
 
 // Views is a type that represents sclice of View structure.
@@ -63,7 +63,7 @@ func (views Views) GetByText(text string, index int) (View, bool) {
 }
 
 func (views Views) GetByMatchingResourceAfterText(resource string, text string) (View, bool) {
-	textView,_ := views.GetByMatchingText(text, 0)
+	textView, _ := views.GetByMatchingText(text, 0)
 	//TODO Could be optimized by having a better nodes structure
 	for _, vw := range views {
 		if strings.Contains(strings.ToLower(vw.Resource), strings.ToLower(resource)) {

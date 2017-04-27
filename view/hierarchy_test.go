@@ -1,9 +1,9 @@
 package view
 
 import (
-	"testing"
 	"encoding/xml"
 	"strconv"
+	"testing"
 )
 
 func TestHierarchyCreation(t *testing.T) {
@@ -16,14 +16,14 @@ func TestHierarchyCreation(t *testing.T) {
 	if err != nil {
 		t.Error(err.Error())
 	}
-	for _,v := range views {
+	for _, v := range views {
 		if v.Text != "Javi" && v.Text != "Anto" {
 			if v.Index != v.TreeIndex {
-				t.Errorf("Unexpected tree index. Got %d but expected %d",v.TreeIndex, v.Index)
+				t.Errorf("Unexpected tree index. Got %d but expected %d", v.TreeIndex, v.Index)
 			}
-			text, _:= strconv.Atoi(v.Text)
+			text, _ := strconv.Atoi(v.Text)
 			if text != v.TreeParentIndex {
-				t.Errorf("Unexpected parent index. Got %d but expected %d",v.TreeParentIndex, v.Text)
+				t.Errorf("Unexpected parent index. Got %d but expected %d", v.TreeParentIndex, v.Text)
 			}
 		}
 	}

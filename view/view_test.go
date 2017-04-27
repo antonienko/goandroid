@@ -1,8 +1,8 @@
 package view
 
 import (
-	"testing"
 	"encoding/xml"
+	"testing"
 )
 
 func TestGetByMatchingResourceAfterText(t *testing.T) {
@@ -17,12 +17,12 @@ func TestGetByMatchingResourceAfterText(t *testing.T) {
 	}
 	viewJavi, _ := views.GetByMatchingResourceAfterText("contactpicker_call_button", "Javi")
 	callButtonIdForJavi := 43
-	if (viewJavi.TreeIndex != callButtonIdForJavi) {
+	if viewJavi.TreeIndex != callButtonIdForJavi {
 		t.Errorf("Found the wrong node. Found %d and expected %d", viewJavi.TreeIndex, callButtonIdForJavi)
 	}
 	viewAntonio, _ := views.GetByMatchingResourceAfterText("contactpicker_call_button", "Antonio")
 	callButtonIdForAntonio := 31
-	if (viewAntonio.TreeIndex != callButtonIdForAntonio) {
+	if viewAntonio.TreeIndex != callButtonIdForAntonio {
 		t.Errorf("Found the wrong node. Found %d and expected %d", viewAntonio.TreeIndex, callButtonIdForAntonio)
 	}
 }
