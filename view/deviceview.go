@@ -64,9 +64,6 @@ func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
 }
 
 func (devView DeviceView) makeDump() (string,error) {
-	out, err := devView.dev.Shell("uiautomator dump /data/window_dump.xml")
-	if err != nil {
-		return Hierarchy{}, err
-	}
+	out, _ := devView.dev.Shell("uiautomator dump /data/window_dump.xml")
 	return out,nil
 }
