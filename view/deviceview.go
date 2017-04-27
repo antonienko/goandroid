@@ -32,14 +32,15 @@ func (devView DeviceView) GetViewes() (Views, error) {
 }
 
 func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
-	out, err := devView.dev.Shell("uiautomator dump /data/window_dump.xml")
-	if err != nil {
-		return Hierarchy{}, err
-	}
-
 	var tag = "UI hierchary dumped to:"
-	if !strings.Contains(out, tag) {
-		return Hierarchy{}, errors.New(fmt.Sprintf("Unable to locate [%s] in output : %s", tag, out))
+	retriesLeft := 10
+	out, _ := devView.makeDump()
+	for !strings.Contains(out, tag) {
+		retriesLeft--
+		if !retriesLeft {
+			return Hierarchy{}, errors.New(fmt.Sprintf("Unable to locate [%s] in output : %s", tag, out))
+		}
+		out, _ = devView.makeDump()
 	}
 	parts := strings.Split(out, "dumped to:")
 	if len(parts) != 2 {
@@ -60,4 +61,12 @@ func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
 	}
 
 	return *xml_hierarchy, nil
+}
+
+func (devView DeviceView) makeDump() (string,error) {
+	out, err := devView.dev.Shell("uiautomator dump /data/window_dump.xml")
+	if err != nil {
+		return Hierarchy{}, err
+	}
+	return out,nil
 }
