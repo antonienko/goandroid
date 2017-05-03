@@ -125,3 +125,24 @@ func (am Activity) WaitForActivityToFocus(name string, timeout int) error {
 	}
 	return errors.New(fmt.Sprintf("Activity %s is not focused on screen within timeout of %d seconds", name, timeout))
 }
+
+func (am Activity) WaitForeverForActivity(name string, sampleRate time.Duration, control chan bool) error {
+	for {
+		select {
+		case <-control:
+			fmt.Println("Stop signal on waitForActivity")
+			return errors.New(fmt.Sprintf("Couldn't see Activity %s before the stop signal", name))
+		default:
+			fmt.Printf("Waiting forever %s",sampleRate)
+			stat, err := am.IsActivityFocused(name)
+			if err != nil {
+				return err
+			}
+			if stat {
+				return nil
+			}
+			time.Sleep(sampleRate)
+		}
+
+	}
+}
