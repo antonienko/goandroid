@@ -98,6 +98,24 @@ func (ts TouchScreen) SwipeLeft(count int) error {
 	return nil
 }
 
+func (ts TouchScreen) SwipeLeftDoubleLength(count int) error {
+	w, h, err := ts.disp.GetDisplaySize()
+	if err != nil {
+		return err
+	}
+	x2 := 0
+	x1 := w-1
+	y2 := h / 2
+	y1 := y2
+	for i := 0; i < count; i++ {
+		err := ts.Swipe(x1, y1, x2, y2, 1000)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // SwipeRight method performs touch swipe right (right --> left) operation for
 // a number of times defined by given count parameter. It returns error on
 // adb operation failure.
@@ -108,6 +126,24 @@ func (ts TouchScreen) SwipeRight(count int) error {
 	}
 	x1 := w / 4
 	x2 := x1 * 3
+	y2 := h / 2
+	y1 := y2
+	for i := 0; i < count; i++ {
+		err := ts.Swipe(x1, y1, x2, y2, 1000)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (ts TouchScreen) SwipeRightDoubleLength(count int) error {
+	w, h, err := ts.disp.GetDisplaySize()
+	if err != nil {
+		return err
+	}
+	x1 := 0
+	x2 := w-1
 	y2 := h / 2
 	y1 := y2
 	for i := 0; i < count; i++ {
