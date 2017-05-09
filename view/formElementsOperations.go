@@ -20,7 +20,7 @@ func (devView DeviceView) CheckCheckboxByResource(resource string, index int, ti
 		}
 		vw, found := vws.GetByResource(resource, index)
 		if found {
-			if vw.Checked {
+			if !vw.Checked {
 				return devView.im.TouchScreen.Tap(vw.Center.X, vw.Center.Y)
 			}
 		}
