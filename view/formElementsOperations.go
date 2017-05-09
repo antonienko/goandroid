@@ -23,6 +23,7 @@ func (devView DeviceView) CheckCheckboxByResource(resource string, index int, ti
 			if !vw.Checked {
 				return devView.im.TouchScreen.Tap(vw.Center.X, vw.Center.Y)
 			}
+			return nil
 		}
 	}
 	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for resource [%s]", timeout, resource))
