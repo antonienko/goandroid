@@ -56,6 +56,22 @@ func (ts TouchScreen) SwipeDown(count int) error {
 	return nil
 }
 
+func (ts TouchScreen) OpenNotifications() error {
+	w, h, err := ts.disp.GetDisplaySize()
+	if err != nil {
+		return err
+	}
+	x1 := w / 2
+	x2 := x1
+	y1 := 1
+	y2 := h-1
+	err = ts.Swipe(x1, y1, x2, y2, 1000)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // SwipeUp method performs touch swipe up (bottom --> top) operation for
 // a number of times defined by given count parameter. It returns error on
 // adb operation failure.
