@@ -230,6 +230,32 @@ func (devView DeviceView) GetResourceForMatchingText(text string, index int, tim
 	}
 	return "", errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matcnhing text [%s]", timeout, text))
 }
+func (devView DeviceView) GetResourceForMatchingTextInterruptable(text string, index int, timeout int, control chan bool) (string, error) {
+	start := time.Now()
+	for {
+		select {
+		case <-control:
+			fmt.Println("Stop signal on GetResourceForMatchingTextInterruptable")
+			return errors.New(fmt.Sprintf("Couldn't see text [%s] before the stop signal", text))
+		default:
+			current := time.Now()
+			delta := current.Sub(start)
+			if delta.Seconds() >= float64(timeout) {
+				return "", errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matcnhing text [%s]", timeout, text))
+			}
+			vws, err := devView.GetViewes()
+			if err != nil {
+				return "", err
+			}
+			vw, found := vws.GetByMatchingText(text, index)
+			if found {
+				return vw.Resource, nil
+			}
+		}
+
+	}
+
+}
 
 func (devView DeviceView) GetResourceForType(typename string, index int, timeout int) (string, error) {
 	start := time.Now()

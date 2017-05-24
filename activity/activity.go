@@ -147,7 +147,7 @@ func (am Activity) WaitForeverForActivity(name string, sampleRate time.Duration,
 	}
 }
 
-func (am Activity) WaitForActivityToFocusInterruptable(name string, sampleRate time.Duration, timeout int, control chan bool) error {
+func (am Activity) WaitForActivityToFocusInterruptable(name string, timeout int, control chan bool) error {
 	startTime := time.Now()
 	for {
 		select {
@@ -167,7 +167,6 @@ func (am Activity) WaitForActivityToFocusInterruptable(name string, sampleRate t
 			if stat {
 				return nil
 			}
-			time.Sleep(sampleRate)
 		}
 	}
 }
