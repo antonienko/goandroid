@@ -147,7 +147,7 @@ func (am Activity) WaitForeverForActivity(name string, sampleRate time.Duration,
 	}
 }
 
-func (am Activity) WaitForActivityToFocusInterruptable(name string, timeout int, control chan bool) error {
+func (am Activity) WaitForActivityToFocusInterruptable(name string, sampleRate time.Duration, timeout int, control chan bool) error {
 	startTime := time.Now()
 	for {
 		select {
@@ -158,7 +158,7 @@ func (am Activity) WaitForActivityToFocusInterruptable(name string, timeout int,
 			currentTime := time.Now()
 			delta := currentTime.Sub(startTime)
 			if delta.Seconds() >= float64(timeout) {
-				break
+				return errors.New(fmt.Sprintf("Activity %s is not focused on screen within timeout of %d seconds", name, timeout))
 			}
 			stat, err := am.IsActivityFocused(name)
 			if err != nil {
@@ -167,7 +167,7 @@ func (am Activity) WaitForActivityToFocusInterruptable(name string, timeout int,
 			if stat {
 				return nil
 			}
+			time.Sleep(sampleRate)
 		}
 	}
-	return errors.New(fmt.Sprintf("Activity %s is not focused on screen within timeout of %d seconds", name, timeout))
 }
