@@ -152,7 +152,7 @@ func (am Activity) WaitForActivityToFocusInterruptable(name string, timeout int,
 	for {
 		select {
 		case <-control:
-			fmt.Println("Stop signal on waitForActivity")
+			fmt.Println("Stop signal on WaitForActivityToFocusInterruptable")
 			return errors.New(fmt.Sprintf("Couldn't see Activity %s before the stop signal", name))
 		default:
 			currentTime := time.Now()
