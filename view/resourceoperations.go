@@ -236,7 +236,7 @@ func (devView DeviceView) GetResourceForMatchingTextInterruptable(text string, i
 		select {
 		case <-control:
 			fmt.Println("Stop signal on GetResourceForMatchingTextInterruptable")
-			return errors.New(fmt.Sprintf("Couldn't see text [%s] before the stop signal", text))
+			return "", errors.New(fmt.Sprintf("Couldn't see text [%s] before the stop signal", text))
 		default:
 			current := time.Now()
 			delta := current.Sub(start)
