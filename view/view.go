@@ -63,7 +63,7 @@ func (views Views) GetByText(text string, index int) (View, bool) {
 }
 
 func (views Views) GetByMatchingResourceAfterText(resource string, text string) (View, bool) {
-	textView, _ := views.GetByMatchingText(text, 0)
+	textView, _ := views.GetByText(text, 0)
 	//TODO Could be optimized by having a better nodes structure
 	for _, vw := range views {
 		if strings.Contains(strings.ToLower(vw.Resource), strings.ToLower(resource)) {
