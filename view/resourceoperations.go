@@ -86,6 +86,32 @@ func (devView DeviceView) ClickMatchingResource(resource string, index int, time
 	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matching resource [%s]", timeout, resource))
 }
 
+func (devView DeviceView) ClickMatchingResourceInterruptable(resource string, index int, timeout int, control chan bool) error {
+	start := time.Now()
+	for {
+		select {
+		case <-control:
+			fmt.Println("Stop signal on GetResourceForMatchingTextInterruptable")
+			return "", errors.New("STOP SIGNAL")
+		default:
+			current := time.Now()
+			delta := current.Sub(start)
+			if delta.Seconds() >= float64(timeout) {
+				break
+			}
+			vws, err := devView.GetViewes()
+			if err != nil {
+				return err
+			}
+			vw, found := vws.GetByMatchingResource(resource, index)
+			if found {
+				return devView.im.TouchScreen.Tap(vw.Center.X, vw.Center.Y)
+			}
+		}
+	}
+	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matching resource [%s]", timeout, resource))
+}
+
 // TODO reduce code duplication
 func (devView DeviceView) ClickMatchingResourceAfterText(resource string, text string, index int, timeout int) error {
 	start := time.Now()
