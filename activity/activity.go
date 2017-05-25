@@ -130,10 +130,8 @@ func (am Activity) WaitForeverForActivity(name string, sampleRate time.Duration,
 	for {
 		select {
 		case <-control:
-			fmt.Println("Stop signal on waitForActivity")
 			return errors.New("STOP SIGNAL")
 		default:
-			fmt.Printf("Waiting forever %s",sampleRate)
 			stat, err := am.IsActivityFocused(name)
 			if err != nil {
 				return err
