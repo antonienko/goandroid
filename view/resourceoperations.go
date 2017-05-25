@@ -92,7 +92,7 @@ func (devView DeviceView) ClickMatchingResourceInterruptable(resource string, in
 		select {
 		case <-control:
 			fmt.Println("Stop signal on GetResourceForMatchingTextInterruptable")
-			return "", errors.New("STOP SIGNAL")
+			return errors.New("STOP SIGNAL")
 		default:
 			current := time.Now()
 			delta := current.Sub(start)
