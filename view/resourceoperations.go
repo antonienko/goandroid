@@ -97,7 +97,7 @@ func (devView DeviceView) ClickMatchingResourceInterruptable(resource string, in
 			current := time.Now()
 			delta := current.Sub(start)
 			if delta.Seconds() >= float64(timeout) {
-				break
+				return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matching resource [%s]", timeout, resource))
 			}
 			vws, err := devView.GetViewes()
 			if err != nil {
@@ -109,7 +109,7 @@ func (devView DeviceView) ClickMatchingResourceInterruptable(resource string, in
 			}
 		}
 	}
-	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for matching resource [%s]", timeout, resource))
+
 }
 
 // TODO reduce code duplication
