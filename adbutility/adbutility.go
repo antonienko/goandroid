@@ -3,7 +3,7 @@ package adbutility
 import (
 	"errors"
 	"fmt"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"os/exec"
 	"strings"
 	"time"
@@ -39,7 +39,7 @@ type AdbEndpointOutputChannel chan AdbEndpointOutput
 // representing the adb command output including stdout and stderr and error is
 // returned if something went wrong.
 func (ep AdbEndpoint) Adb(timeout int, args ...string) (string, error) {
-	log.Println("adb :", args)
+	log.WithField("args", args).Debug("adb")
 	cmd := exec.Command(ep.ADBPath, args...)
 	done := make(AdbEndpointOutputChannel)
 	go func(done AdbEndpointOutputChannel, cmd *exec.Cmd) {
@@ -92,7 +92,7 @@ func (ep AdbEndpoint) GetAttachedDevices(timeout int) ([]string, error) {
 // adb side.
 func (ep AdbEndpoint) WaitForSerials(timeout int, serials ...string) error {
 	if len(serials) == 0 {
-		return errors.New(fmt.Sprintf("No serials specified", timeout))
+		return errors.New(fmt.Sprint("No serials specified", timeout))
 	}
 
 	innter_to := 5
@@ -132,7 +132,7 @@ func (ep AdbEndpoint) WaitForSerials(timeout int, serials ...string) error {
 // error. Error is also returned if something went wront in adb side.
 func (ep AdbEndpoint) WaitForDevices(timeout int, count int) error {
 	if count <= 0 {
-		return errors.New(fmt.Sprintf("Can not wait for less than or eual to zero devices", timeout))
+		return errors.New(fmt.Sprint("Can not wait for less than or eual to zero devices", timeout))
 	}
 
 	innter_to := 5
