@@ -158,7 +158,7 @@ func (dev Device) WaitForBootToComplete(bootTimeout int) error {
 		}
 		val, err := dev.GetProperty(PROP_BOOT_STATUS)
 		if err != nil {
-			return err
+			continue
 		}
 		if val == "1" {
 			return nil
