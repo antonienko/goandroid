@@ -166,3 +166,11 @@ func (dev Device) WaitForBootToComplete(bootTimeout int) error {
 	}
 	return errors.New("Device not completed boot sequence in timeout")
 }
+
+func (dev Device) CheckInternetConnection() (bool, error) {
+	ret, err := dev.Shell("dumpsys", "telephony.registry", "|", "grep", "mDataConnectionState")
+	if err != nil {
+		return false, err
+	}
+	return strings.Contains(ret, "mDataConnectionState=2"), nil
+}
