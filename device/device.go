@@ -168,9 +168,9 @@ func (dev Device) WaitForBootToComplete(bootTimeout int) error {
 }
 
 func (dev Device) CheckInternetConnection() (bool, error) {
-	ret, err := dev.Shell("dumpsys", "telephony.registry", "|", "grep", "mDataConnectionState")
+	ret, err := dev.Shell("dumpsys", "connectivity", "|", "grep", "ENETUNREACH")
 	if err != nil {
 		return false, err
 	}
-	return strings.Contains(ret, "mDataConnectionState=2"), nil
+	return !strings.Contains(ret, "ENETUNREACH"), nil
 }
