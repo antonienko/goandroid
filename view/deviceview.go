@@ -10,6 +10,7 @@ import (
 	"github.com/antonienko/goandroid/display"
 	"github.com/antonienko/goandroid/input"
 	"strings"
+	"time"
 )
 
 type DeviceView struct {
@@ -41,6 +42,7 @@ func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
 			return Hierarchy{}, errors.New(fmt.Sprintf("Unable to locate [%s] in output : %s", tag, out))
 		}
 		out, _ = devView.makeDump()
+		time.Sleep(100 * time.Millisecond)
 	}
 	parts := strings.Split(out, "dumped to:")
 	if len(parts) != 2 {
