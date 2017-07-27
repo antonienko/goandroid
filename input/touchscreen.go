@@ -64,7 +64,7 @@ func (ts TouchScreen) OpenNotifications() error {
 	x1 := w / 2
 	x2 := x1
 	y1 := 1
-	y2 := h-1
+	y2 := h - 1
 	err = ts.Swipe(x1, y1, x2, y2, 1000)
 	if err != nil {
 		return err
@@ -120,7 +120,7 @@ func (ts TouchScreen) SwipeLeftDoubleLength(count int) error {
 		return err
 	}
 	x2 := 0
-	x1 := w-1
+	x1 := w - 1
 	y2 := h / 2
 	y1 := y2
 	for i := 0; i < count; i++ {
@@ -159,7 +159,7 @@ func (ts TouchScreen) SwipeRightDoubleLength(count int) error {
 		return err
 	}
 	x1 := 0
-	x2 := w-1
+	x2 := w - 1
 	y2 := h / 2
 	y1 := y2
 	for i := 0; i < count; i++ {

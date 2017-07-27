@@ -1,9 +1,9 @@
 package view
 
 import (
-	"time"
-	"fmt"
 	"errors"
+	"fmt"
+	"time"
 )
 
 func (devView DeviceView) CheckCheckboxByResource(resource string, index int, timeout int) error {
@@ -28,4 +28,3 @@ func (devView DeviceView) CheckCheckboxByResource(resource string, index int, ti
 	}
 	return errors.New(fmt.Sprintf("Timeout occured after %d seconds while searching for resource [%s]", timeout, resource))
 }
-
