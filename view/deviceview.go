@@ -41,7 +41,7 @@ func (devView DeviceView) GetHierarchy() (Hierarchy, error) {
 		if retriesLeft == 0 {
 			return Hierarchy{}, errors.New(fmt.Sprintf("Unable to locate [%s] in output : %s", tag, out))
 		}
-		time.Sleep(150 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		out, _ = devView.makeDump()
 	}
 	parts := strings.Split(out, "dumped to:")
